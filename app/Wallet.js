@@ -25,7 +25,11 @@ Wallet.prototype.releaseKey = function(){
   return key
 }
 Wallet.prototype.pay = function(price){
-  this.credit = this.credit - price
+  let keyBonus = 0
+  if (this.key) {
+    keyBonus = 5
+  }
+  this.credit = this.credit - price + keyBonus
 }
 
 const acceptedCoins = [5, 10, 20]

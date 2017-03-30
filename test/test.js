@@ -130,5 +130,17 @@ describe('Coffee Machine', function(){
       assert.equal(tea.type, 'tea')
       assert.equal(cf.credit, 10)
     })
+
+    it('As a user if I buy the beverage with the key the costs are lower than the actual prices of 0.5cents.', function(){
+      cf.insertKey({ credit: 50 })
+      const tea = cf.getTea()
+      assert.equal(tea.type, 'tea')
+      assert.equal(cf.credit, 15)
+    })
+  })
+
+  describe('Add-ons', function(){
+    
+
   })
 })
