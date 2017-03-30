@@ -2,6 +2,7 @@
 const Wallet = require('./Wallet')
 const coffeeMaker = require('./coffeeMaker')
 const teaMaker = require('./teaMaker')
+const chocolateMaker = require('./chocolateMaker')
 
 function CoffeeMachine(){
   this.wallet = new Wallet()
@@ -29,28 +30,29 @@ CoffeeMachine.prototype.releaseKey = function(){
 }
 
 CoffeeMachine.prototype.getCoffee = function(){
-  const coffee = coffeeMaker(this.credit)
-  if (coffee.type !== 'none'){
-    this.wallet.pay(coffeeMaker.price)
-  }
-  return coffee
+  return this.makeBeverage('coffee')
 }
 
 CoffeeMachine.prototype.getTea = function(){
-  const tea = teaMaker(this.credit)
-  if (tea.type !== 'none'){
-    this.wallet.pay(teaMaker.price)
-  }
-  return tea
+  return this.makeBeverage('tea')
 }
 
-function makeBeverage(type){
-  makers[type]()
+CoffeeMachine.prototype.getChocolate = function(){
+  return this.makeBeverage('chocolate')
+}
+
+CoffeeMachine.prototype.makeBeverage = function(type) {
+  const beverage = makers[type](this.credit)
+  if (beverage.type !== 'none'){
+    this.wallet.pay(makers[type].price)
+  }
+  return beverage
 }
 
 const makers = {
   coffee: coffeeMaker,
-  tea: teaMaker
+  tea: teaMaker,
+  chocolate: chocolateMaker
 }
 
 

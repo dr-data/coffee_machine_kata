@@ -112,5 +112,23 @@ describe('Coffee Machine', function(){
       assert.equal(tea.type, 'tea')
       assert.equal(cf.credit, 0)
     })
+
+    it('with 60cent the user can get a chocolate', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      const choco = cf.getChocolate()
+      assert.equal(choco.type, 'chocolate')
+      assert.equal(cf.credit, 0)
+    })
+
+    it('with 50cent the user can get a tea', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(10)
+      cf.insertCoin(20)
+      const tea = cf.getTea()
+      assert.equal(tea.type, 'tea')
+      assert.equal(cf.credit, 10)
+    })
   })
 })
