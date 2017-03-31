@@ -7,6 +7,7 @@ const chocolateMaker = require('./chocolateMaker')
 function CoffeeMachine(){
   this.wallet = new Wallet()
   this.credit = 0  
+  this.sugar = 0
 }
 
 Object.defineProperty(CoffeeMachine.prototype, 'credit', {
@@ -45,8 +46,17 @@ CoffeeMachine.prototype.makeBeverage = function(type) {
   const beverage = makers[type](this.credit)
   if (beverage.type !== 'none'){
     this.wallet.pay(makers[type].price)
+    beverage.sugar = this.sugar
   }
+
   return beverage
+}
+
+CoffeeMachine.prototype.addSugar = function(qty) {
+  this.sugar += qty
+  if (this.sugar > 5){
+    this.sugar = 5
+  }
 }
 
 const makers = {

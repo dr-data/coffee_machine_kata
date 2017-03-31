@@ -140,7 +140,34 @@ describe('Coffee Machine', function(){
   })
 
   describe('Add-ons', function(){
-    
+    it('As a user I can set the desired level of sugar to use (1 to 5) and the machine must use it to prepare the beverage.', function(){
+      cf.addSugar(1)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      const tea = cf.getTea()
+      assert.equal(tea.type, 'tea')
+      assert.equal(tea.sugar, 1)
+    })    
+
+    it('As a user I can set the desired level of sugar to use (1 to 5) and the machine must use it to prepare the beverage.', function(){
+      cf.addSugar(1)
+      cf.addSugar(2)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      const tea = cf.getTea()
+      assert.equal(tea.type, 'tea')
+      assert.equal(tea.sugar, 3)
+    })
+
+    it('No more than 5 of sugar', function(){
+      cf.addSugar(5)
+      cf.addSugar(2)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      const tea = cf.getTea()
+      assert.equal(tea.type, 'tea')
+      assert.equal(tea.sugar, 5)
+    })
 
   })
 })
