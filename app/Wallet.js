@@ -1,3 +1,5 @@
+const availableAddons = require('./availableAddons')
+
 function Wallet(credit){
   this.credit = 0
 }
@@ -18,18 +20,27 @@ Wallet.prototype.insertKey = function(key){
   this.key = key
   this.credit = this.credit + this.key.credit
 }
+
 Wallet.prototype.releaseKey = function(){
   const key = this.key
   this.key = null
   key.credit = this.reset()
   return key
 }
+
 Wallet.prototype.pay = function(price){
   let keyBonus = 0
   if (this.key) {
     keyBonus = 5
   }
   this.credit = this.credit - price + keyBonus
+}
+
+Wallet.prototype.payAddons = function(addons) {
+  const total = addons.reduce((acc, a) => {
+    return acc + availableAddons[a].price
+  }, 0)
+  this.credit = this.credit - total
 }
 
 const acceptedCoins = [5, 10, 20]

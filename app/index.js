@@ -3,22 +3,24 @@ const Wallet = require('./Wallet')
 const coffeeMaker = require('./coffeeMaker')
 const teaMaker = require('./teaMaker')
 const chocolateMaker = require('./chocolateMaker')
+const availableAddons = require('./availableAddons')
 
-function CoffeeMachine(){
+function CoffeeMachine() {
   this.wallet = new Wallet()
   this.credit = 0  
   this.sugar = 0
+  this.addons = []
 }
 
 Object.defineProperty(CoffeeMachine.prototype, 'credit', {
   get: function() { return this.wallet.credit },
 })
 
-CoffeeMachine.prototype.insertCoin = function(coin){
+CoffeeMachine.prototype.insertCoin = function(coin) {
   this.wallet.insertCoin(coin)
 }
 
-CoffeeMachine.prototype.reset = function(){
+CoffeeMachine.prototype.reset = function() {
   return this.wallet.reset()
 }
 
@@ -26,8 +28,14 @@ CoffeeMachine.prototype.insertKey = function(key) {
   this.wallet.insertKey(key)
 }
 
-CoffeeMachine.prototype.releaseKey = function(){
+CoffeeMachine.prototype.releaseKey = function() {
   return this.wallet.releaseKey()
+}
+
+CoffeeMachine.prototype.preconditionMatch = function(bev) {
+  return this.addons.reduce(function(acc, a){
+    return (acc && availableAddons[a].with.includes(bev))
+  }, true)
 }
 
 CoffeeMachine.prototype.getCoffee = function(){
@@ -43,13 +51,19 @@ CoffeeMachine.prototype.getChocolate = function(){
 }
 
 CoffeeMachine.prototype.makeBeverage = function(type) {
-  const beverage = makers[type](this.credit)
-  if (beverage.type !== 'none'){
-    this.wallet.pay(makers[type].price)
-    beverage.sugar = this.sugar
-  }
 
-  return beverage
+  if (this.preconditionMatch(type)) {
+    const beverage = makers[type](this.credit)
+    if (beverage.type !== 'none'){
+      this.wallet.pay(makers[type].price)
+      this.wallet.payAddons(this.addons)
+      beverage.sugar = this.sugar
+      beverage.addons = this.addons
+      this.addons = []
+    }
+    return beverage
+  } 
+  return {message: 'you cannot have it'}
 }
 
 CoffeeMachine.prototype.addSugar = function(qty) {
@@ -57,6 +71,10 @@ CoffeeMachine.prototype.addSugar = function(qty) {
   if (this.sugar > 5){
     this.sugar = 5
   }
+}
+
+CoffeeMachine.prototype.add = function(addon) {
+  this.addons.push(addon)
 }
 
 const makers = {

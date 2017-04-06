@@ -169,5 +169,73 @@ describe('Coffee Machine', function(){
       assert.equal(tea.sugar, 5)
     })
 
+    it('As a user I can add super-hot beverage addon', function(){
+      cf.add('super-hot')
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      const tea = cf.getTea()
+      assert.equal(tea.addons.length, 1)
+      assert.equal(tea.addons[0], 'super-hot')
+      assert.equal(cf.credit, 10)
+    })
+
+    it('As a user I can add lemon to tea', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.add('lemon')
+      const tea = cf.getTea()
+      assert.equal(tea.addons.length, 1)
+      assert.equal(tea.addons[0], 'lemon')
+    })
+    
+    it('As a user I can add milk to tea', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.add('milk')
+      const tea = cf.getTea()
+      assert.equal(tea.addons.length, 1)
+      assert.equal(tea.addons[0], 'milk')
+      assert.equal(cf.credit, 0)
+    })
+
+    it('As a user I cannot add lemon to coffee', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.add('lemon')
+      const coffee = cf.getCoffee()
+      assert.equal(coffee.message, 'you cannot have it')
+      assert.equal(cf.credit, 60 )
+    })
+  
+
+    it('As a user I can have a decaf coffee', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.add('decaf')
+      const tea = cf.getCoffee()
+      assert.equal(tea.addons.length, 1)
+      assert.equal(tea.addons[0], 'decaf')
+      assert.equal(cf.credit, 10)
+    })
+
+    it('As a user I can add nuts to chocolate', function(){
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.insertCoin(20)
+      cf.add('nuts')
+      cf.add('whipped-cream')
+      const tea = cf.getChocolate()
+      assert.equal(tea.addons.length, 2)
+      assert.equal(tea.addons[0], 'nuts')
+      assert.equal(tea.addons[1], 'whipped-cream')
+      assert.equal(cf.credit, 0)
+    })
   })
 })
