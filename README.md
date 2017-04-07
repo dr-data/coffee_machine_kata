@@ -7,14 +7,15 @@ The stories are divided in three iteration of different difficulty.
 ### Basic machine operation with coins and keys
 
 * When the coffee machine starts it is ready to operate and the credit is zero.
-* As a user I can insert coins of different format (5, 10, 20 cents) and the displayed credit should grow accordingly.
+* As a user I can insert coins of different formats (5, 10, 20 cents) and the displayed credit should grow accordingly.
 * As a user I can cancel the operation and have the money back.
-* As a user I can insert a prepaid key. The key can have some credit loaded and it will be displayed (sum it to actual credit). The user can recharge the key using the coins. The eventually present credit is passed to the key.
+* As a user I can insert a prepaid key. The key can have some credit loaded and it will be displayed (sum it to actual credit).
+* The user can extract the key and the credit should not be changed 
+* The user can recharge the key using the coins. The eventually present credit is passed to the key.
 
 
 ### Making beverages
-* When the credit as reached 30cents the user can get a coffee. If the credit is not enough the machine should display a message with the price of the coffee (30cents)
-* If the user inserts more money than needed, the machine should give him the rest
+* When the credit as reached 30cents the user can get a coffee. If the credit is not enough the machine should display a message with the price of the coffee (30cents). Credit should decrease accordingly.
 * The machine can deliver different types of beverages: Tea and Chocolate. Tea costs 40cents. Chocolate costs 60cents.
 * As a user if I buy the beverage with the key the costs are lower than the actual prices of 0.5cents.
 
