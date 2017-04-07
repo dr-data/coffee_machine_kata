@@ -1,4 +1,3 @@
-// TODO: how about a wallet object to manage coins, key, credit, etc...
 const Wallet = require('./Wallet')
 const coffeeMaker = require('./coffeeMaker')
 const teaMaker = require('./teaMaker')
@@ -32,8 +31,8 @@ CoffeeMachine.prototype.releaseKey = function() {
   return this.wallet.releaseKey()
 }
 
-CoffeeMachine.prototype.preconditionMatch = function(bev) {
-  return this.addons.reduce(function(acc, a){
+function preconditionMatch(addons, bev) {
+  return addons.reduce(function(acc, a){
     return (acc && availableAddons[a].with.includes(bev))
   }, true)
 }
@@ -52,7 +51,7 @@ CoffeeMachine.prototype.getChocolate = function(){
 
 CoffeeMachine.prototype.makeBeverage = function(type) {
 
-  if (this.preconditionMatch(type)) {
+  if (preconditionMatch(this.addons, type)) {
     const beverage = makers[type](this.credit)
     if (beverage.type !== 'none'){
       this.wallet.pay(makers[type].price)
